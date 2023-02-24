@@ -97,5 +97,5 @@ def play(player_name):
             clear()
             break
 
-    print("Wins: {}\nLosses: {}\nTies: {}".format(wins, losses, ties))
+    
 
