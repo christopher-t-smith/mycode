@@ -22,7 +22,7 @@ def play(player_name):
     while True:
 
         # Print scoreboard
-        print(f"\n{player_name}, Wins: {wins}, Losses: {losses}, Ties: {ties}\n")
+        print(f"{player_name}, Wins: {wins}, Losses: {losses}, Ties: {ties}\n")
 
         # Player's input for Rock, Paper, and Scissors
         player_choice = input("Please choose Rock, Paper, or Scissors: ")
@@ -33,11 +33,11 @@ def play(player_name):
         # Error for if user submits inputs choice other than Rock, Paper or Scissors
         if player_choice not in ["Rock", "Paper", "Scissors"]:
             clear()
-            print("Invalid choice. Please choose between Rock, Paper, or Scissors")
+            print("Invalid choice. Please choose between Rock, Paper, or Scissors\n")
             continue
 
         # Print what player and computer chose
-        print(f"{player_name} chose {player_choice}.")
+        print(f"\n{player_name} chose {player_choice}.")
         print(f"Computer chose {computer_choice}.\n")
 
         # Combinations between User and Computer choices
@@ -54,19 +54,9 @@ def play(player_name):
             losses += 1
 
         # Game Quit
-        choice = input("Do you want to play again? (y/n): ").lower()
+        choice = input("\nDo you want to play again? (y/n): ").lower()
         if choice != "y":
-
-            # Print Final Score when quitting game
-            print(f"\nFinal score for {player_name}: Wins: {wins}, Losses: {losses}, Ties: {ties}")
-
-            if wins > losses:
-                print(f"{player_name} wins the game!")
-            elif wins < losses:
-                print("Computer loses the game!")
-            else:
-                print("The game is tied!")
-            print("Going back to the main menu")
+            clear()
             return
 
         else:

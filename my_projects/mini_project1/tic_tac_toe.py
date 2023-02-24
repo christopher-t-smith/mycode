@@ -28,7 +28,7 @@ def get_player_move(board):
         if move.isdigit() and int(move) in range(1, 10) and board[int(move) - 1] == ' ':
             return int(move) - 1
         else:
-            print("Invalid move, please try again.")
+            print("\nInvalid move, please try again.")
 
 # Computer's turn
 def get_computer_move(board):
@@ -94,6 +94,7 @@ def play(player_name):
 
         play_again = input("Do you want to play again? (y/n): ")
         if play_again.lower() != 'y':
+            clear()
             break
 
     print("Wins: {}\nLosses: {}\nTies: {}".format(wins, losses, ties))

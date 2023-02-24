@@ -13,28 +13,31 @@ def clear():
 
 # Function to get user's name
 def get_name():
+    clear()
+    print("Are you ready to play minigames?\n")
     player_name = input("What is your name? ")
+    clear()
     return player_name
 
 # Game Choice
 def game_choice():
-    clear()
+
     print("Select a game:")
     print("1. Rock, Paper, Scissors")
     print("2. Tic-Tac-Toe")
-    print("3. Quit Application")
+    print("3. Quit Application\n")
     choice = input("Enter your choice (1-3) ")
     return choice
 
 # Main Function to start application
 def main():
-
+    
     # Get the user's name
     player_name = get_name()
     
-    while True:
+    while True: 
 
-        # Run function to get user's choic of game
+        # Run function to get user's choice of game
         choice = game_choice()
 
         # Start game or quit game depending on user's choice
@@ -48,6 +51,7 @@ def main():
             print("Thank you for playing!")
             return
         else:
+            clear()
             print("Invalid choice")
 
 # call the main function
