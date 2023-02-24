@@ -5,6 +5,12 @@
 import rock_paper_scissors
 import tic_tac_toe
 
+# Function to clear Console
+import os
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 # Function to get user's name
 def get_name():
     player_name = input("What is your name? ")
@@ -12,6 +18,7 @@ def get_name():
 
 # Game Choice
 def game_choice():
+    clear()
     print("Select a game:")
     print("1. Rock, Paper, Scissors")
     print("2. Tic-Tac-Toe")
@@ -35,8 +42,8 @@ def main():
             print("Starting Rock, Paper, Scissors")
             rock_paper_scissors.play(player_name)
         elif choice == "2":
-            # Implement Tic Tac Toe
-            print("Tic-Tac-Toe game is not implemented yet")
+            print("Starting Tic-Tac-Toe")
+            tic_tac_toe.play(player_name)
         elif choice == "3":
             print("Thank you for playing!")
             return

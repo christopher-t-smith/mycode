@@ -8,22 +8,28 @@
 #!/usr/bin/python3
 """Mini Project #1 | Rock Paper Scissors"""
 
-# Import random from Python Library
+# Import modules
 import random
+import os
+
+# Function to clear Console
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def play(player_name):
     
+    clear()
+
     # Counter for Wins, Losses, and Ties
     wins = 0
     losses = 0
     ties = 0
-    games_played = 0
 
     # While Loops for in game
     while True:
 
         # Print scoreboard
-        print(f"\n{player_name}, Wins: {wins}, Losses: {losses}, Ties: {ties}")
+        print(f"\n{player_name}, Wins: {wins}, Losses: {losses}, Ties: {ties}\n")
 
         # Player's input for Rock, Paper, and Scissors
         player_choice = input("Please choose Rock, Paper, or Scissors: ")
@@ -33,12 +39,13 @@ def play(player_name):
 
         # Error for if user submits inputs choice other than Rock, Paper or Scissors
         if player_choice not in ["Rock", "Paper", "Scissors"]:
+            clear()
             print("Invalid choice. Please choose between Rock, Paper, or Scissors")
             continue
 
         # Print what player and computer chose
         print(f"{player_name} chose {player_choice}.")
-        print(f"Computer chose {computer_choice}.")
+        print(f"Computer chose {computer_choice}.\n")
 
         # Combinations between User and Computer choices
         if player_choice == computer_choice:
@@ -52,8 +59,6 @@ def play(player_name):
         else:
             print ("You lose!")
             losses += 1
-
-        games_played += 1
 
         # Game Quit
         choice = input("Do you want to play again? (y/n): ").lower()
@@ -69,5 +74,7 @@ def play(player_name):
             else:
                 print("The game is tied!")
             print("Going back to the main menu")
-            return          
-            
+            return
+
+        else:
+            clear()
