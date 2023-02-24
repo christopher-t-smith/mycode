@@ -1,10 +1,3 @@
-# Create an application for rock paper scissors
-# Keep track of Wins, losses, and ties
-# Choices of rock, paper, and scissors
-# Print what the player and computer selected
-# User choice of quiting game after each match
-# Catch errors for invalid choice
-
 #!/usr/bin/python3
 """Mini Project #1 | Rock Paper Scissors"""
 
