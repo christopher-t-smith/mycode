@@ -9,3 +9,4 @@ with open("dracula.txt","r") as foo:
                 print(line)
                 counter += 1
                 fang.write(line)
+print(counter)
