@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Trivia Question</title>
+    </head>
+
+    <body>
+        <h1>Trivia Question</h1>
+        <p>{{ question }}</p>
+        {% if error_messge %}
+        <p style = "color: red;">{{ error_message }}</p>
+        {% endif %}
+        <form method="POST" action="/answer">
+            <label>Answer:</label>
+            <input type="text" name="answer">
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
