@@ -23,16 +23,20 @@ def showInstructions():
       get [item]
     ''')
 
-def showStatus():
+def showStatus(player)
     """determine the current status of the player"""
-    # print the player's current location
+    # Print the player's current location
     print('---------------------------')
     print('You are in the ' + currentRoom)
-    # print what the player is carrying
-    print('Inventory:', inventory)
-    # check if there's an item in the room, if so print it
+    # Print the player's current stats and equipped items
+    print(f'HP: {player.hp}  MP: {player.mp}')
+    print(f'Attack: {player.attack}  Defense: {player.defense}')
+    print(f'Equipped Weapon: {player.equipped_weapon}')
+    print(f'Equipped Armor: {player.equipped_armor}')
+    print('Inventory:', player.inventory)
+    # Check if there's an item in the room, if so print it
     if "item" in rooms[currentRoom]:
-      print('You see a ' + rooms[currentRoom]['item'])
+        print('You see a ' + rooms[currentRoom]['item'])
     print("---------------------------")
 
 

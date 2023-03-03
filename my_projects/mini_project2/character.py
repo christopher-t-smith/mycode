@@ -13,12 +13,6 @@ class Character:
             "armor": None
         }
 
-    def show_status(self):
-        print(f"HP: {self.hp}")
-        print(f"Attack: {self.attack}")
-        print(f"Defense: {self.defense}")
-        print(f"Iventory: {self.inventory}")
-
     def is_alive(self):
         return self.hp > 0
 
