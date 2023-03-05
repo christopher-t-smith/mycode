@@ -1,121 +1,212 @@
 #!/usr/bin/python3
 """Mini-Project 2: Dungeon Crawler | Christopher T. Smith"""
 
-#Implement Dungeon hallways and rooms, and floors.
-#Implement weapons.
-#Implement a Battle Sequence.
-#Implement a HP, Attack, and Magic/Skills.
-#Implement additional Enemies classes with different stats and attacks.
-#Gold and an npc store?
-#Dungeon boss or floor boss?
-#Map Representation of possible directions? (User will need to create a map as they progress through the game
+import sys
+import os
+from rooms import Rooms
+
+from character import Player
+
+player = Player()
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def showInstructions():
+    clear()
     """Show the game instructions when called"""
     #print a main menu and the commands
     print('''
     RPG Game
-    Quest: Find Ultra Rare Key and Magic Potion, then find your way to the Garden to escape"
-    Note: Avoid the monsters!
+    ========
+    Quest: Make your way through the dungeon and defeat the dragon!
+    ========
+    Tips:
+    -Defeating monsters drop potions. Defeating bosses drops equipment.
+    -Manage the use of your potions. Gather what you can before attempting a boss.
+    -Total of 5 Floors (current_floor x 2 = amount_of_rooms).
+    -Map out the dungeon so you don't get lost.
+    -Have fun with the game!
     ========
     Commands:
-      go [direction]
-      get [item]
+        >go [direction]
+        >equip [weapon] or equip [armor]
+        >unequip [weapon] or unequip [armor]
+        >use [item]
     ''')
 
-def showStatus(player)
-    """determine the current status of the player"""
-    # Print the player's current location
+def showStatus(Player):
+    """determine the current status of the Player"""
+    # Print the Player's current location
     print('---------------------------')
-    print('You are in the ' + currentRoom)
-    # Print the player's current stats and equipped items
-    print(f'HP: {player.hp}  MP: {player.mp}')
+    print("You are currently on {} in {}".format( currentFloor, currentRoom,))
+    # Print the Player's current stats and equipped items
+    print(f'HP: {player.hp}')
     print(f'Attack: {player.attack}  Defense: {player.defense}')
-    print(f'Equipped Weapon: {player.equipped_weapon}')
-    print(f'Equipped Armor: {player.equipped_armor}')
-    print('Inventory:', player.inventory)
-    # Check if there's an item in the room, if so print it
-    if "item" in rooms[currentRoom]:
-        print('You see a ' + rooms[currentRoom]['item'])
+    print(f'Equipped Weapon: {player.equipment["weapon"]}')
+    print(f'Equipped Armor: {player.equipment["armor"]}')
+    print('Inventory:', [str(item) for item in player.inventory])
     print("---------------------------")
-
 
 # an inventory, which is initially empty
 inventory = []
 
-# a dictionary linking a room to other rooms
-rooms = {
 
-            'Hall' : {
-                'south' : 'Kitchen',
-                'east' : 'Dining Room',
-             },
-
-            'Kitchen' : {
-                'north' : 'Hall',
-             },
-            'Dining Room' : {
-                'west' : 'Hall',
-                'south' : 'Garden',
-                'item' : 'potion'
-             },
-            'Garden' : {
-                'north' : 'Dining Room'
-            },
-         }
-
-# start the player in the Hall
-currentRoom = 'Hall'
+currentFloor = "Floor 1"
+currentRoom = "Room 1"
+possible_directions = Rooms[currentFloor][currentRoom]
 
 showInstructions()
 
 # breaking this while loop means the game is over
 while True:
-    showStatus()
 
-    # the player MUST type something in
-    # otherwise input will keep asking
+    # Get user input
     move = ''
     while move == '':
+        showStatus(player)
+        print("Possible locations: {possible_directions}".format(possible_directions=possible_directions))
         move = input('>')
 
-    # normalizing input:
-    # .lower() makes it lower case, .split() turns it to a list
-    # therefore, "get golden key" becomes ["get", "golden key"]          
     move = move.lower().split(" ", 1)
 
-    #if they type 'go' first
     if move[0] == 'go':
-        #check that they are allowed wherever they want to go
-        if move[1] in rooms[currentRoom]:
-            #set the current room to the new room
-            currentRoom = rooms[currentRoom][move[1]]
-        # if they aren't allowed to go that way:
+        direction = move[1]
+        if direction in Rooms[currentFloor][currentRoom]:
+            currentRoom = Rooms[currentFloor][currentRoom][direction]
+            clear()
         else:
-            print('You can\'t go that way!')
+            clear()
+            print(f"You cannot move {move[1]}.")
 
-    #if they type 'get' first
-    if move[0] == 'get' :
-        # make two checks:
-        # 1. if the current room contains an item
-        # 2. if the item in the room matches the item the player wishes to get
-        if "item" in rooms[currentRoom] and move[1] in rooms[currentRoom]['item']:
-            #add the item to their inventory
-            inventory.append(move[1])
-            #display a helpful message
-            print(move[1] + ' got!')
-            #delete the item key:value pair from the room's dictionary
-            del rooms[currentRoom]['item']
-        # if there's no item in the room or the item doesn't match
+    elif move[0] == 'equip':
+        # Player equips an item
+        item = move[1].title()
+        for inventory_item in player.inventory:
+            if str(inventory_item) == item:
+                clear()
+                inventory_item.equip(player)
+                if item != 'Healing Potion':
+                    print(f"You equipped {inventory_item}.")
+                    break
         else:
-            #tell them they can't get it
-            print('Can\'t get ' + move[1] + '!')
-        ## If a player enters a room with a monster
-    if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
-        print('A monster has got you... GAME OVER!')
-        break
-        ## Define how a player can win
-    if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
-        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
-        break
+            clear()
+            print(f"{item} is invalid for to equip.")
+
+    elif move[0] == 'unequip':
+        item = move[1].title()
+        for equipped_item in player.equipment:
+            if item in player.equipment:
+                clear()
+                equipped_item.unequip(player)
+                print(f"You unequipped {equipped_item}.")
+                break
+            else:
+                clear()
+                print(f"You don't have {item} in your inventory.")
+
+    elif move[0] == 'use':
+        item = move[1].title()
+        for inventory_item in player.inventory:
+            if str(inventory_item) == item:
+                clear()
+                inventory_item.use(player)
+                if item == 'Healing Potion':
+                    print(f"You used a {inventory_item}.")
+                break
+        else:
+            clear()
+            print(f"You don't have {item} in your inventory.")
+
+    else:
+        clear()
+        print('Invalid input')
+
+    # Update current floor if necessary
+    if currentRoom =='DownStairs to Floor 1':
+         currentFloor = 'Floor 1'
+         currentRoom = 'Boss Room'
+    elif currentRoom == 'UpStairs to Floor 2':
+        currentFloor = 'Floor 2'
+        currentRoom = 'Room 1'
+    elif currentRoom =='DownStairs to Floor 2':
+         currentFloor = 'Floor 2'
+         currentRoom = 'Boss Room'
+    elif currentRoom == 'UpStairs to Floor 3':
+        currentFloor = 'Floor 3'
+        currentRoom = 'Room 1'
+    elif currentRoom =='DownStairs to Floor 3':
+         currentFloor = 'Floor 3'
+         currentRoom = 'Boss Room'
+    elif currentRoom == 'UpStairs to Floor 4':
+        currentFloor = 'Floor 4'
+        currentRoom = 'Room 1'
+    elif currentRoom =='DownStairs to Floor 4':
+         currentFloor = 'Floor 4'
+         currentRoom = 'Boss Room'
+    elif currentRoom == 'UpStairs to Floor 5':
+        currentFloor = 'Floor 5'
+        currentRoom = 'Room 1'
+
+    possible_directions = Rooms[currentFloor][currentRoom]
+
+        # Check if there is a monster in the room
+    if "monster" in Rooms[currentFloor][currentRoom]:
+        clear()
+        monster = Rooms[currentFloor][currentRoom]["monster"]
+        print(f"A {monster.name} appears!")
+        # Battle the monster
+        while monster.is_alive() and player.is_alive():
+            # Prompt the user for their action
+            showStatus(player)
+            print(f"{monster.name} current has {monster.hp} HP")
+            action = input("Choose an action: (a)ttack, (h)ealing potion\n>")
+            # Handle the player's action
+            if action == "a":
+                clear()
+                # Player attacks
+                damage = player.attack
+                monster.take_damage(damage)
+                print(f"\nYou attack the {monster.name} for {damage} damage.")
+            elif action == "h":
+                clear()
+                for inventory_item in player.inventory:
+                    if str(inventory_item) == "Healing Potion":
+                        clear()
+                        inventory_item.use(player)
+                        print(f"You used a {inventory_item}.")
+                        break
+                else:
+                    clear()
+                    print(f"You don't have Healing potions in your inventory.")
+            else:
+                clear()
+                print("Invalid action!")
+                continue  # Skip the rest of the loop and start over
+            # Check if the monster is defeated
+            if not monster.is_alive():
+                clear()
+                if monster.name == "Dragon":
+                    clear()
+                    print("Congratulations, you defeated the dragon and won the game!")
+                    sys.exit()
+                else:
+                    print(f"You defeated the {monster.name}!")
+                    del Rooms[currentFloor][currentRoom]["monster"]
+                    monster.defeat(player)
+                    break
+            # Monster attacks
+            damage = monster.attack
+            player.take_damage(damage)
+            print(f"The {monster.name} attacks you for {damage} damage.")
+            # Check if the player is defeated
+            if not player.is_alive():
+                clear()
+                print("Game over! You have been defeated.")
+                sys.exit()
+    else:
+        print('\nEmpty room')
+
+
+
 

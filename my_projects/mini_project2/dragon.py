@@ -1,16 +1,12 @@
 #!/usr/bin/python3
-"""Skeleton Class | Christopher T. Smith"""
+"""Dragon Class | Christopher T. Smith"""
 
-import random
-
-from items import HealingPotion
-
-class Skeleton:
+class Dragon:
     def __init__(self):
-        self.name = "Skeleton"
-        self.max_hp = 65
+        self.name = "Dragon"
+        self.max_hp = 200
         self.hp = self.max_hp
-        self.attack = random.randint(20, 30)
+        self.attack = 70
 
     def take_damage(self, amount):
         self.hp -= amount
@@ -27,8 +23,3 @@ class Skeleton:
 
     def __str__(self):
         return self.name
-    
-    def defeat(self, player):
-        if not self.is_alive():
-            player.add_to_inventory(HealingPotion())
-            print("You have received a Healing Potion!")

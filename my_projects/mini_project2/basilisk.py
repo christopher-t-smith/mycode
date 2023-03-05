@@ -1,20 +1,18 @@
 #!/usr/bin/python3
-"""Ogre Class | Christopher T. Smith"""
+"""Basilisk Class | Christopher T. Smith"""
 
-import random
+from items import GreatAxe
+from items import SteelArmor
 
-from items import Dagger
-from items import LeatherArmor
-
-class Ogre:
+class Basilisk:
     def __init__(self):
-        self.name = "Ogre"
-        self.max_hp = 30
+        self.name = "Basilisk"
+        self.max_hp = 100
         self.hp = self.max_hp
-        self.attack = 30
+        self.attack = 50
 
     def take_damage(self, amount):
-        self.hp -= random.randint(15, 25)
+        self.hp -= amount
 
     def is_alive(self):
         return self.hp > 0
@@ -31,6 +29,6 @@ class Ogre:
     
     def defeat(self, player):
         if not self.is_alive():
-            player.add_to_inventory(Dagger())
-            player.add_to_inventory(LeatherArmor())
-            print("You have received a Dagger and Leather Armor!")
+            player.add_to_inventory(SteelArmor())
+            player.add_to_inventory(GreatAxe())
+            print("You have received a GreatAxe and Steel Armor!")
